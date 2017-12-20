@@ -39,21 +39,21 @@ type winners struct {
 }
 
 func apiHandler(w http.ResponseWriter, r *http.Request) {
-    wins := winners{}
+wins := winners{}
 
-	err := queryWinners(&wins)
-	if err != nil {
-		http.Error(w, err.Error(), 500)
-		return
-	}
+err := queryWinners(&wins)
+if err != nil {
+	http.Error(w, err.Error(), 500)
+	return
+}
 
-	out, err := json.Marshal(wins)
-	if err != nil {
-		http.Error(w, err.Error(), 500)
-		return
-	}
+out, err := json.Marshal(wins)
+if err != nil {
+	http.Error(w, err.Error(), 500)
+	return
+}
 
-	fmt.Fprintf(w, string(out))
+fmt.Fprintf(w, string(out))
 }
 
 // queryRepos first fetches the repositories data from the db
