@@ -57,31 +57,31 @@ fmt.Fprintf(w, string(out))
 
 // queryRepos first fetches the repositories data from the db
 func queryWinners(wins *winners) error {
-	rows, err := db.Query(`SELECT name, count(name) 
-                               FROM honourboard 
-                               WHERE board = 'Kings/Queens' 
-                               GROUP BY name 
-                               ORDER BY count(name) DESC;`)
+    rows, err := db.Query(`SELECT name, count(name) 
+                           FROM honourboard 
+                           WHERE board = 'Kings/Queens' 
+                           GROUP BY name 
+                           ORDER BY count(name) DESC;`)
+    if err != nil {
+	return err
+    }
+    defer rows.Close()
+    for rows.Next() {
+	win := apiSummary{}
+	err = rows.Scan(
+		&win.Name,
+                &win.Count,
+	)
 	if err != nil {
 		return err
 	}
-	defer rows.Close()
-	for rows.Next() {
-		win := apiSummary{}
-		err = rows.Scan(
-			&win.Name,
-                        &win.Count,
-		)
-		if err != nil {
-			return err
-		}
-		wins.Winners = append(wins.Winners, win)
-	}
-	err = rows.Err()
-	if err != nil {
-		return err
-	}
-	return nil
+	wins.Winners = append(wins.Winners, win)
+    }
+    err = rows.Err()
+    if err != nil {
+	return err
+    }
+    return nil
 }
 
 func initDb() {
