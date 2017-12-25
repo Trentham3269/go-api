@@ -30,8 +30,7 @@ func main() {
 
 type apiSummary struct {
 	Name       string
-	Year       string
-	Location   string
+        Count      int
 }
 
 type winners struct {
@@ -58,7 +57,11 @@ fmt.Fprintf(w, string(out))
 
 // queryRepos first fetches the repositories data from the db
 func queryWinners(wins *winners) error {
-	rows, err := db.Query(`select name, year, location from honourboard where board = 'Commonwealth Games'`)
+	rows, err := db.Query(`SELECT name, count(name) 
+                               FROM honourboard 
+                               WHERE board = 'Kings/Queens' 
+                               GROUP BY name 
+                               ORDER BY count(name) DESC;`)
 	if err != nil {
 		return err
 	}
@@ -67,8 +70,7 @@ func queryWinners(wins *winners) error {
 		win := apiSummary{}
 		err = rows.Scan(
 			&win.Name,
-			&win.Year,
-			&win.Location,
+                        &win.Count,
 		)
 		if err != nil {
 			return err
