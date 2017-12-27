@@ -1,4 +1,4 @@
-### go-api
+# go-api
 Simple api with golang and postgres db.
 
 #### Database notes
@@ -15,4 +15,8 @@ CREATE TABLE honourboard (
   location VARCHAR (20),  
   country VARCHAR (3)  
 );
+```
+Copied from csv (no headers) into honourboard table:
+```
+COPY honourboard FROM '/path/to/data.csv' WITH (FORMAT csv);
 ```
