@@ -55,13 +55,15 @@ if err != nil {
 fmt.Fprintf(w, string(out))
 }
 
-// queryRepos first fetches the repositories data from the db
+// returns multiple winners from the db
 func queryWinners(wins *winners) error {
-    rows, err := db.Query(`SELECT name, count(name) 
-                           FROM honourboard 
-                           WHERE board = 'Kings/Queens' 
-                           GROUP BY name 
-                           ORDER BY count(name) DESC;`)
+    rows, err := db.Query(`SELECT name,
+                                  count(name) 
+                             FROM honourboard 
+                            WHERE board = 'Kings/Queens'
+                         GROUP BY name
+                           HAVING count(name) > 1
+                         ORDER BY count(name) DESC;`)
     if err != nil {
 	return err
     }
