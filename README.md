@@ -20,8 +20,16 @@ CREATE TABLE honourboard (
 ```
 COPY honourboard FROM '/path/to/data.csv' WITH (FORMAT csv);
 ```
-### Port forwarding
-To be able to view in Chrome on my computer:
-* ```$ ssh -v -L 8000:localhost:8000 user@remoteserver``` on the local machine
-* ```$ go-api``` on the remote server
-* View in the browser on the local machine at ```localhost:8000/api/```
+### Compile
+* ```$ cd $GOPATH```
+* ```$ go install honourboard/go-api```
+
+### Run 
+* ```$ cd src/honourboard/go-api```
+* ```$ export DBHOST=localhost```
+* ```$ export DBPORT=5432```
+* ```$ export DBUSER=***********```
+* ```$ export DBPASS=*********```
+* ```$ export DBNAME=***********```
+* ```$ go run app.go```
+* ```$ curl localhost:8000/api/```
